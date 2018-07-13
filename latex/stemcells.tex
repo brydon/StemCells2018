@@ -17,6 +17,7 @@ The Effects of Phenotypic Plasticity on the Fixation Probability of Mutant Cance
 The cancer stem cell hypothesis claims that tumor invasion, metastasis, and maintenance is driven by a small niche of the total cancer cell population called Cancer Stem Cells. These CSCs can differentiate into specialised, progenitor cells or reproduce into new CSCs. While it was once held that this differentiation pathway was unidirectional, recent research has demonstrated that differentiated cells are more plastic than initially considered. In particular, differentiated cells can de-differentiate and recover their stem-like capacity. Two recent papers have considered how this rate of plasticity affects the evolutionary dynamic of an invasive, malignant population of stem cells and differentiated cells into existing tissue \cite{mohammad, wodarz}. These papers arrive at seemingly opposing conclusions, one claiming that increased plasticity results in increased invasive potential, and the other that increased plasticity decreases invasive potential. This report demonstrates that what really matters when determining the effect on invasive potential is how one distributes this increased plasticity between the compartments of resident and mutant-type cells.
 \end{abstract}
 \section{Introduction}
+\marginpar{Before I really nit-pick over figure placement, i want to ensure body text is ``okay". Right now there may be jumps in text on the page as each figure is strictly placed}
 Cancer invasion is a complex process of the cellular ecosystem and micro-environment. Typically, cancerous cells achieve evolutionary success by mimicking, and subverting, the behaviour of regular, healthy tissues in the host \cite{moh1}. In healthy tissue a distinct stratification of tissue structure is observed where the self-renewal capabilities of terminally differentiated cells rely upon a discrete subclass of the cellular population deemed stem cells \cite{weis2000}. In particular, these stem cells can behave invasively through the process of division and specialisation \cite{moh2}. As healthy, specialised (or differentiated) cells die, the stem cells divide producing the required differentiated cell as a byproduct of mitosis. In this way the population of specialised, terminally differentiated cells is maintained \cite{moh2, watt2000}. However, in order to maintain tissue homeostasis, this mechanism must be controlled by both positive and negative feedback loops. To that effect there is mounting evidence that differentiated cells can de-differentiate back into adult stem cells \cite{watt2000}.
 
 This process of cellular invasion in the tissue driven by a particular niche of cells is very similar to the dynamics observed in invasive cancers. This has led to the cancer stem cell hypothesis that posits that the invasion, metastasis, and regulation of solid tumors are driven by a small sub-population of cells that behave very much like stem cells \cite{moh3, moh4, moh5, moh6}. In particular, this same behaviour of differentiated cells undergoing some process of de-differentiation and recovering some stem-like properties has been implicated in many forms of cancers experimentally \cite{moh23, moh24, moh25, moh26}.
@@ -27,10 +28,10 @@ Recently two papers have mathematically modeled the effect of this stem-cell pla
 The situation being modeled is the same in both papers \cite{mohammad, wodarz}. The authors consider a population of resident stem cells in an equilibrium state. They then introduce a mutant, cancerous stem cell into the wild-type population and investigate the probability that the single mutant achieves fixation as a function of the plasticity of the mutant stem cell. That is, the probability $\rho_S$ that as time $t$ tends to infinity the wild type stem cells have all either died or differentiated and the mutant type stem cells remain for a given de-differentiation rate $\eta$.
 
 \subsection{A Discrete Moran Model}
-
+\marginpar{Am I going in to much detail for these? Should I remove the formulae in (1)-(5)? and (6)}
 In \cite{mohammad} the authors consider modeling the birth-death process by way of a Moran model. In particular, the authors consider two types of cells, stem cells ($S_i$) and differentiated cells ($D_i$) where $i\in\{1,2\}$ denotes whether the cells in question are wild-type ($i=1$) or mutant-type ($i=2$). Cells can react and transition between compartments according the following rules (summarised in Figure \ref{MohFig1}). Stem cells undergo mitosis at a rate $r_i$. There is a probability $u_i$ that the stem cell produces both a stem cell $S_i$ and a differentiated cell $D_i$ during division. Similarly, with probability $(1-u_i)$, the stem cell produces two stem cells as the result of this division. Moreover, differentiated cells can reproduce as well at a rate $\tilde{r}_i$. There is a probability $\eta_i$ that this division is asymmetric, producing one stem cell $S_i$ and one differentiated cell $D_i$, and a probability ($1-\eta_i$), that the division is symmetric, producing two differentiated cells $D_i$. Similarly, with probability $d_i$ and $\tilde{d}_i$, the stem cells and differentiate cells die.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{moh_rxn.png}
 \end{center}
@@ -62,12 +63,13 @@ W_D^-(n_S,n_D) &= \left(\tilde{r}_1\,(1-\eta_1)\,(N_D-n_D)+r_1\,u_1\,(N_S-n_S)\r
 
 With equations (\ref{MohRef1}) and (\ref{MohRef2}-\ref{MohRef3}) are reproduced from \cite{mohammad}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{moh_fig5.png}
 \end{center}
 \caption{Effect of Change in the rate of phenotypic plasticity for mutant DCs on the survival probability of malignant cells. In subfigures (a), (b), and (c) we have respectively considered the fixation probability of mutants while the initial malignant mutation respectively occurs in SC, DC, and SC+DC compartments at random. In these plots $N_S=N_D=10$, $r_1=\tilde{r}_1=1$, $r_2=\tilde{r}_2=1.1$, $u_1=0.5$, and $\eta_1=0$. Different asymmetric division rates of normal and malignant individuals have also been taken into account when the fixation probability is given as a function of $\eta$. Solid curves and points are respectively the results of exact calculations and simulation analyses. At each given discrete point, the error bar depicts the standard error of the mean. Reproduced from \cite{mohammad}.}\label{MohFig5}
 \end{figure}
+\marginpar{I was going to re-do this figure and combine it witht he Wodarz figure below. Two panels, panel a) the Shirayeh figure, panel b) the Wodarz one. Re-done with my results. Waiting on code to run for Dominik's stuff.}
 
 The results of Figure \ref{MohFig5} clearly demonstrate that fixation probability increases as plasticity of the mutant increases. In particular, when the resident wild type cells were given no plasticity and the mutant type cells plasticity was treated as a variable it was observed that increasing the mutant types plasticity gave these mutant types a greater invasive potential when placed in a population dominated by wild types population.
 
@@ -102,7 +104,7 @@ In this case, the model permits an equilibrium point internal to the first quadr
 
 To numerically establish the fixation probability the following experiments were run. The author begun by placing $S_1$ and $D_1$ at the equilibrium values and then introduced a single mutant stem cell, $S_2=1$ and $D_2=0$. Gillespie simulations were then performed \cite{gillespie} for many realisations (more than $10^8$). The fraction of simulations in which the mutants fixated was recorded and from this the fixation probability was estimated. This was done for various values of de-differentiation rates $g=g_1=g_2$. The results are recorded in Figure \ref{wodarzResults}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{wodarz.png}
 \end{center}
@@ -167,7 +169,7 @@ The tacit assumption in \cite{mohammad} is that part of the phenotypic differenc
 To investigate this further, we first considered the Moran process as before (from \cite{mohammad}), except measuring $\rho_S(\eta, \eta)$ for various values of $\eta$. The results can be seen in Figure \ref{mohBothInc}. In particular, note that $\rho_S(0,\eta)$ is an increasing function of $\eta$, as was previously observed in \cite{mohammad} (and Figure \ref{MohFig5}). However, $\rho_S(\eta, \eta)$ is a \textit{decreasing} function of $\eta$, analogous to what was observed in \cite{wodarz} (and Figure \ref{wodarzResults}).
 
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{moh_both.png}
 \end{center}
@@ -177,7 +179,7 @@ To investigate this further, we first considered the Moran process as before (fr
 \subsection{Recreating the Dynamics from Moran Model in the Gillespie Model}
 Similarly, we considered the Gillespie process as from \cite{gillespie}. We have modeled both $\rho_S(0, g)$ and $\rho_S(g, g)$. Again, recognise that $\rho_S(0, g)$ is an increasing function of $g$ while $\rho_S(g, g)$ is a decreasing function of $g$, analogous to the results in Figure \ref{mohBothInc}.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.74\textwidth]{gill_fix.png}
 \end{center}
@@ -198,20 +200,38 @@ We further considered experiments where the relative fitness of the mutant-type 
 
 In the case of the neutral mutant (where $r_2=\tilde{r}_2=r_1=\tilde{r}_1$ and $u_2=u_1$), the results are summarised in Figures \ref{contour}, \ref{constantEta1Stack}, \ref{avg_eta1_plot}. The contour plot in Figure \ref{contour} indicates the fixation probability as a function of both de-differentiation parameters. It indicates that in general, increasing $\eta_2$, the de-differentiation probability of the mutant cells, increases the fixation probability. Moreover, this fixation probability is maximal for $(\eta_1, \eta_2) = (0, 1)$. However, it also shows that for large enough $\eta_1$, increasing $\eta_2$ will not always result in an increased fixation probability. In the extreme case, where $\eta_1=1$, increasing $\eta_2$ initially increases the fixation probability, but eventually this fixation probability decreases as $\eta_2$ is closer to $1$.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.74\textwidth]{contourplot.png}
 \end{center}
 \caption{A contourplot demonstrating the fixation probability as a function of both de-differentiation parameters. It indicates that increasing the mutant-type de-differentiation parameter does not always result in increased fixation of mutant-type stem cells, even when keeping the wild-type de-differentiation parameter constant.}\label{contour}
 \end{figure}
 
-This result can be seen more clearly in Figure \ref{constantEta1Stack}, where the fixation probability is plotted for constant values of $\eta_1$ as a function of varying $\eta_2$. When $\eta_1=0$ the fixation probability is a concave down, increasing, saturating function of $\eta_2$. However, for $\eta_1=0.2$ the fixation probability is still increasing, but undergoes a change in concavity early on. As $\eta_1$ is increased further the fixation probability is no longer a strictly increasing function of $\eta_2$ but initially increases and eventually decreases as $\eta_2$ becomes larger.
+This result can be seen more clearly in Figure \ref{constantEta1Stack}, where the fixation probability is plotted for constant values of $\eta_1$ as a function of varying $\eta_2$. When $\eta_1=0$ the fixation probability is a concave down, increasing, saturating function of $\eta_2$. However, for $\eta_1=0.2$ the fixation probability is still increasing, but undergoes a change in concavity early on. As $\eta_1$ is increased further the fixation probability is no longer a strictly increasing function of $\eta_2$ but initially increases and eventually decreases as $\eta_2$ becomes larger. 
 
-\begin{figure}[!ht]
+This non-monotonic fixation probability function is an interesting phenomenon. This implies that for particular parameter sets, it is actually worse for mutant type stem cell fixation to increase the rate at which mutant differentiated cells de-differentiate into mutant stem cells. This is non-obvious, as one would assume increasing the pool of mutant stem cells, by decreasing the pool of mutant differentiated cells, is vital to the fixation of the mutant stem cells. However, by decreasing the pool of mutant differentiated cells, the wild type differentiated cells have a selective pressure removed and can see an increased response in growth. For large enough $\eta_1$, these wild type differentiated cells can de-differentiate back into wild type stem cells and thus provide a selective disadvantage to the mutant stem cells. This is an important phenomenon to fully understand. Much of the results of Section \ref{stab} is to indicate that this phenomenon persists over a wide range of parameter space and is not the result of a particular, lucky set of parameters.
+
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.74\textwidth]{constant_eta1_stackplot.png}
 \end{center}
 \caption{A stackplot demonstrating the fixation probability as a function of the de-differentiation probability $\eta_2$ for various choices of $\eta_1$. The solid line is the calculated fixation probability and the dashed lines indicate one deviation by the standard error of the mean.}\label{constantEta1Stack}
+\end{figure}
+
+The original paper by \cite{mohammad} considered only a particular constant $\eta_1$ value while allowing $\eta_2$ to vary. Thus far we have considered various constant $\eta_1$ values and noted interesting dynamics occurring. In the paper by \cite{wodarz}, they considered varying $\eta_1$ as a linear function of $\eta_2$ (in their particular case, $\eta_1$ was identically $\eta_2$). In the next set of experiments we considered varying $\eta_1$ as other linear functions of $\eta_2$. In Figure \ref{eta_stack} we note that monotonicity of the fixation probability function is lost for various relationships between $\eta_1$ and $\eta_2$. In particular, when $\eta_1$ is larger than $\eta_2$ by a constant value or when $\eta_1$ is smaller than $\eta_2$ by a constant factor. In these cases, the fixation probability curve exhibits the same behaviour as seen in Figure \ref{constantEta1Stack} where the fixation probability initially increases before decreasing. 
+
+In general, the results seem to tell a story that satisfies intuition: when $\eta_1>\eta_2$ fixation probability is lowered and when $\eta_1<\eta_2$ fixation probability is made greater. However, we also note that in general, the fixation probability curves tend to decrease in $\eta_2$. Indicating the rate at which mutant differentiated cells de-differentiate back into stem cells is worse for the fixation of the mutant stem cells. This can be explained as $\eta_1$ is an increasing function of $\eta_2$, hence an increase in $\eta_2$ is an increase in $\eta_1$. Thus this increase in parameter directly benefits the competitor, wild-type stem cells. 
+
+It is interesting to note, however, in the first diagram of Figure \ref{eta_stack} where $\eta_1$ is sufficiently larger than $\eta_2$, an increase in $\eta_2$ actually, in general, increases the fixation probability of the mutant-type stem cells. In particular, for the $\eta_1=\eta_2+0.24$ curve, we see that increasing $\eta_2$ initially provides a large benefit to the mutant stem cells, and only starts to harm the mutant stem cells for $\eta_2$ bigger than approximately $0.35$. Even when this fixation probability curve is decreasing, it is not decreasing very quickly. Thus, the general effect is that an increase in $\eta_2$ is an increase in $\rho_S(\eta_2+0.24, \eta_2)$. In this case, it could be explained that with $\eta_1$ sufficiently larger, the benefit from an increased $\eta_2$ is negligible for the wild-type stem cells, however the benefit from increasing $\eta_2$ for the mutant-type cells is enough to overcome some of the selective pressures from the wild-type cells and achieve fixation.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.47\textwidth]{eta_plus_const.png}
+\includegraphics[width=0.47\textwidth]{eta_minus_const.png}\\
+\includegraphics[width=0.47\textwidth]{eta_times_const.png}
+\includegraphics[width=0.47\textwidth]{eta_div_const.png}
+\end{center}
+\caption{A figure showing the effect on fixation probability by varying $\eta_1$ as a function of $\eta_2$. The plots on the left indicate that when $\eta_1>\eta_2$, the net effect is a decrease in fixation probability. Moreover, when $\eta_1$ is larger than $\eta_2$ by a fixed constant, the fixation probability curve is non-monotone, first increasing then decreasing. However, when $\eta_1$ is larger than $\eta_2$ by a constant factor, then the fixation probability curve is monotone decreasing. Similarly for the figures on the right. A decrease in $\eta_1$ by a fixed constant results in a fixation probability curve that is montone decreasing. Increasing $\eta_1$ by a constant factor results in a non-monotone fixation probability curve.}\label{eta_stack}
 \end{figure}
 
 When examining Figure \ref{contour}, it appears that in general the fixation probability increases. Moreover, when the fixation probability is increasing, it obtains a larger value. That is, for increasing $\eta_1$ the fixation probability is, in general, decreasing. This effect raises the question that in general, in a heterogeneous population of wild-type stem cells where deviations in de-differentiation probability $\eta_1$ can be observed, what might be the expected effect on the fixation probability. To that end, we modeled the average fixation probability as a function of $\eta_2$ averaged over all values of $\eta_1$. That is,
@@ -219,19 +239,19 @@ When examining Figure \ref{contour}, it appears that in general the fixation pro
 \[\langle\rho_S(\eta_2)\rangle = \int_0^1 \rho_S(\eta_1, \eta_2)\,f(\eta_1)\,\d \eta_1\]
 where $f(\eta_1)$ is the probability density function for $\eta_1$ in this case taken to be uniform. The result, as presented in Figure \ref{avg_eta1_plot}, is an increasing function of $\eta_2$.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.74\textwidth]{avg_eta1_plot.png}
 \end{center}
 \caption{The mean fixation probability as a function of $\eta_2$ with the mean taken over the parameter $\eta_1$ assuming a uniform distribution. The dashed bars indicate a single deviation by standard error of the mean.}\label{avg_eta1_plot}
 \end{figure}
 
-\subsection{Stability Analysis}
+\subsection{Stability Analysis}\label{stab}
 
 The previous results were all obtained for the neutral mutant. To demonstrate the generality of these results and their independence on particular parameter choices, we repeated the analysis for varying parameters. In particular we varied the relative fitness of the mutant-types, $r_2=\tilde{r}_2$, and the probability of differentiation of the mutant types, $u_2$. The technical details can be found in Appendix \ref{exp}.
 
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.74\textwidth]{avg_eta1_r2_stackplot1.png}\\
 \includegraphics[width=0.74\textwidth]{avg_eta1_r2_stackplot2.png}
@@ -239,38 +259,36 @@ The previous results were all obtained for the neutral mutant. To demonstrate th
 \caption{Average fixation probability for various relative fitness levels of the mutant-type cells, $r_2=\tilde{r}_2$. The dashed lines indicate one deviation of the standard error of the mean. The average was taken over wild-type de-differentiation probability $\eta_1$.}\label{r2_stack}
 \end{figure}
 
-The results of Figure \ref{r2_stack} show that for general mutant
+The results of Figure \ref{r2_stack} show that for general mutant increasing the relative fitness increases the fixation probability. For cases where the relative fitness is lower, the de-differentiation parameter $\eta_2$ is more important. It is only for relatively larger relative fitness levels that  these fixation probability curves begin to demonstrate saturation and diminishing returns as a response to increased mutant cell plasticity. 
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
-\includegraphics[width=0.74\textwidth]{avg_eta1_u2_stackplot1.png}
-\end{center}
-\caption{}\label{u2_stack1}
-\end{figure}
-
-\begin{figure}[!ht]
-\begin{center}
+\includegraphics[width=0.74\textwidth]{avg_eta1_u2_stackplot1.png}\\
 \includegraphics[width=0.74\textwidth]{avg_eta1_u2_stackplot2.png}
 \end{center}
-\caption{}\label{u2_stack2}
+\caption{Average fixation probability for various values of $u_2$, the probability the mutant type stem cell differentiates. The dashed lines indicate one deviation of the standard error of the mean. The average was taken over wild-type de-differentiation probability $\eta_1$.}\label{u2_stack1}
 \end{figure}
 
-\begin{figure}[!ht]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.74\textwidth]{avg_eta1_u2_stackplot3.png}
 \end{center}
-\caption{}\label{u2_stack3}
+\caption{Average fixation probability for various values of $u_2$, the probability the mutant type stem cell differentiates. The dashed lines indicate one deviation of the standard error of the mean. The average was taken over wild-type de-differentiation probability $\eta_1$.}\label{u2_stack3}
 \end{figure}
+
+In Figures \ref{u2_stack1} and \ref{u2_stack3} the probability parameter $u_2$ was varied. This parameter corresponds to the probability a mutant stem cell will differentiate. For smaller values of $u_2$ the standard error of the mean is larger, indicating that the results are more stochastic and fixation relies more upon lucky differentiation strategies. Moreover, for small $u_2$, while non-monotonic fixation probability curves are observed, the variability of these curves is less pronounced. in particular for $u_2=0.10$ the fixation probability remains bounded between, approximately, $0.113$ and $0.127$. Whereas for larger $u_2$ values such as $u_2=0.95$ the fixation probability varies from effectively $0$ to $0.1$. This suggests that in cases where stem cells are differentiating less frequently, the effect of the de-differentiation parameter is less important. Moreover, in these cases the stem-cells are more evolutionarily stable. However, when the stem-cells are differentiating more frequently, changes in the de-differentiation parameter are more important to the over-all evolutionary dynamics of the cells.
 
 
 \section{Conclusion}
 In conclusion, two, apparently contradictory, stochastic models of cancer stem cell behaviour were considered. Both models were questioning the invasive capacity of mutant stem cells in the presence of a pre-existing stem cell and differentiated cell strata. The models were concerned with how the phenotypic plasticity, or de-differentiation rate, affected the invasive potential of these mutant stem cells. A Moran, Markovian, birth-death model was considered and Gillespie simulations of a reaction network were considered. The apparent discrepancy between these models was discovered to be hidden within assumptions determining how both the resident type and mutant type plasticity rates alter. This apparent contradiction was resolved and the behaviour of the Gillespie simulation model was recovered in the Moran context, likewise the behaviour of the Moran simulation model was recovered in the Gillespie simulation context.
 
-ALSO I DID OTHER THINGS LIKE IN FURTHER RESULTS SECTION.
+It was also observed that increasing plasticity in the mutant type differentiated cells can result in both positive and negative effects for the fixation probability of the mutant stem cells. This seeming contradiction was demonstrated to be stable across differing parameter sets indicating that this phenomenon may be observed in general. \marginpar{This conclusion feels .. rushed? Could flush out more}
 
 \begin{appendices}
 
 \section{Numerics}\label{exp}
+
+\marginpar{This section is incomplete. I need to explain the interpolation for the Figure 9 code and discuss the technical details of the differing figures in general}
 
 The data were generated by performing Moran simulations. Each simulation was run until fixation or extinction of the mutant stem cells occurred or until 15,000 iterations were achieved -- whichever came first. A total of 500,000 such simulations were run in 50 batches of 10,000. For each batch of 10,000 simulations, fixation probability was estimated by logging what percentage of the 10,000 iterations fixated. The error of these probabilities was estimated as the standard error of the mean calculated from the 50 different batches. 
 

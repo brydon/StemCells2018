@@ -15,7 +15,7 @@ def open_experiment(fn, n=50):
 def contour_plot(data, n=50, show=True):
     ls = np.linspace(0, 1, len(data))
     plt.contour(ls, ls, data, [0.025, 0.05, 0.1, 0.15, 0.2, 0.3], colors='k', alpha=0.2)
-    plt.contourf(ls, ls, data, n)
+    plt.contourf(ls, ls, data, n, cmap=plt.cm.hot)
     if show:
         plt.show()
 

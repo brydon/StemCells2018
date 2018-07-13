@@ -91,7 +91,7 @@ def moh_run(RR2, R2T, UU1, UU2, N1, N2, RR1=1, R1T=1, D1=1, D2=1, D1T=1, D2T=1):
         else:
             nd -= 1
 
-        if ns == 0 or ns == NS:
+        if (ns == 0 and nd == 0) or (ns == NS and nd == ND):
             break
 
     return ns == NS
