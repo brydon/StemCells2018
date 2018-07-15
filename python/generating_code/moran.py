@@ -1,3 +1,4 @@
+#!/software/.admin/bins/bin/python2.7
 """
 
 Run Moran simulations for cancer stem cells fixation probability. For more information see:
@@ -110,7 +111,7 @@ def p_work(sd):
 
 def temp_pkl(j, obj):
     """ This just writes a pickle file with the filename string I prefer """
-    with open('moran_' + sys.argv[-2] + '_' + sys.argv[-1] + '_' + str(j) + '.dat', 'wb') as f:
+    with open(outdir + '/moran_' + sys.argv[-2] + '_' + sys.argv[-1] + '_' + str(j) + '.dat', 'wb') as f:
         pickle.dump(obj, f)
 
 
@@ -138,12 +139,12 @@ def main():
 
     num_loops = 10
 
-    temp_res = [_ for _ in range(num_save)]
+    temp_res = [_ for _ in range(num_loops)]
 
     start_str = 'moran_' + sys.argv[-2] + '_' + sys.argv[-1] + '_'
 
     try:
-        startj = max([int(x[x.rfind('_')+1:x.rfind('.')]) for x in os.listdir(os.getcwd()) if x.startswith(start_str)]) + 1
+        startj = max([int(x[x.rfind('_')+1:x.rfind('.')]) for x in os.listdir(outdir) if x.startswith(start_str)]) + 1
     except:
         startj = 0
     if startj >= MAX_j:
@@ -155,7 +156,7 @@ def main():
 
         
     try:
-        startj = max([int(x[x.rfind('_')+1:x.rfind('.')]) for x in os.listdir(os.getcwd()) if x.startswith(start_str)]) + 1
+        startj = max([int(x[x.rfind('_')+1:x.rfind('.')]) for x in os.listdir(outdir) if x.startswith(start_str)]) + 1
     except:
         startj = 0
     if startj > MAX_j:
@@ -172,7 +173,6 @@ def main():
     # doing a semaphore check at each iteration. 
 
     temp_pkl(startj, np.mean(np.mean(temp_res, 0),0))
-    temp_res = [_ for _ in range(num_save)]
 
     return "Finished Successfully"
 
@@ -182,10 +182,11 @@ if __name__ == "__main__":
 
     if whichparam == "u2":
         u2 = float(sys.argv[-1])
-        r2 = r2t = 1.1
+        r2 = r2t = 1
     elif whichparam == "r2":
         u2 = 0.5
         r2 = r2t = float(sys.argv[-1])
+    outdir = "../../data/vary_eta1_eta2_" + whichparam
 
     print main()
 

@@ -1,6 +1,8 @@
+#!/software/.admin/bins/bin/python2.7
 import sys
 import time
 import subprocess
+from numpy.random import shuffle
 
 print "Starting keepup"
 
@@ -17,17 +19,19 @@ if __name__ == "__main__":
     MAX = 50
 
     r2s = [0.25, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0]
-    u2s = [0.05*(1+i) for i in range(19)]
+    u2s = [0.1*(1+i) for i in range(9)]
 
     which_param = sys.argv[-1]
 
     if which_param == "u2":
         params = u2s
     elif which_param == "r2":
-        parms == r2s
+        params = r2s
     else:
         print "Do not recognise the final argument. Should be 'u2' or 'r2'"
         sys.exit(1)
+
+    shuffle(params)
 
     cmd = ' '.join(sys.argv[1:] + [str(params.pop(0))])
 
