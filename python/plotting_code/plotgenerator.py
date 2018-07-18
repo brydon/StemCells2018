@@ -51,9 +51,31 @@ def std_plot(data, sd, show=True):
 
 if __name__ == "__main__":
     start_time = time.time()
+    ls = [0, 0.001, 0.025, 0.05, 0.075, 0.1]
+    m = [0.27, 0.31239999999999996, 0.5448000000000001, 0.686, 0.7931999999999999, 0.8399999999999999]
+    s = [0.010881176406988356, 0.01198999582985749, 0.016292329483533027, 0.010695793565696736, 0.00677052435192429, 0.009959919678390978]
+    m = np.array(m)
+    s = np.array(s)
+
+    plt.plot(ls, m, 'k-')
+    plt.plot(ls, m+s, 'k--')
+    plt.plot(ls, m-s, 'k--')
+    plt.xlabel(r"$g$")
+    plt.ylabel(r"$\rho(0, g)$")
+    plt.savefig("../../images/wod_in_moh.png")
+    plt.clf()
+
     m, s = open_experiment("../../data/vary_eta1_eta2_r2/moran_r2_1.0")
 
     ls = np.linspace(0, 1, len(m))
+
+    plt.xlabel(r"$\eta$")
+    plt.ylabel(r"$\rho(\eta, \eta)$")
+
+    std_plot(np.array([m[x, x] for x in range(len(m))]), np.array([s[x, x] for x in range(len(m))]), show=False)
+
+    plt.savefig("../../images/moh_in_wod.png")
+    plt.clf()
 
     for i in range(6):
         plt.subplot(3, 2, i+1)
@@ -72,7 +94,7 @@ if __name__ == "__main__":
     plt.colorbar()
     plt.savefig("../../images/contourplot.png")
     plt.clf()
-    
+
     plt.xlabel(r'$\eta_2$')
     plt.ylabel('Fixation Probability')
     plt.title('Average Fixation Probability for Wild-Type de-Differentiation')
@@ -80,8 +102,10 @@ if __name__ == "__main__":
     plt.savefig("../../images/avg_eta1_plot.png")
     plt.clf()
 
-    for i, r2 in enumerate([0.25, 0.5, 0.75, 1.0]):
-        plt.subplot(2, 2, i+1)
+    
+    plt.figure(figsize=(8.5,11))
+    for i, r2 in enumerate([0.25, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0]):
+        plt.subplot(4, 2, i+1)
 
         m, s = open_experiment("../../data/vary_eta1_eta2_r2/moran_r2_"+str(r2))
         plt.xlabel(r'$\eta_2$')
@@ -90,21 +114,9 @@ if __name__ == "__main__":
         plt.tight_layout()
         std_plot(np.mean(m, 0), np.mean(s, 0), show=False)
 
-    plt.savefig("../../images/avg_eta1_r2_stackplot1.png")
+    plt.savefig("../../images/avg_eta1_r2_stackplot.png")
     plt.clf()
-
-    for i, r2 in enumerate([2.0, 3.0, 4.0, 5.0]):
-        plt.subplot(2, 2, i+1)
-
-        m, s = open_experiment("../../data/vary_eta1_eta2_r2/moran_r2_"+str(r2))
-        plt.xlabel(r'$\eta_2$')
-        plt.ylabel(r'Fix. Prob.')
-        plt.title(r'$r_2=%0.2f$' % r2)
-        plt.tight_layout()
-        std_plot(np.mean(m, 0), np.mean(s, 0), show=False)
-
-    plt.savefig("../../images/avg_eta1_r2_stackplot2.png")
-    plt.clf()
+    plt.figure(figsize=None)
 
     for i, u2 in enumerate([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]):
         plt.subplot(3, 3, i + 1)
@@ -129,12 +141,9 @@ if __name__ == "__main__":
 
     gz = interp.griddata(points, values, (grid_x, grid_y), method='cubic')
 
-    points, values = transform_dat(s)
+    #points, values = transform_dat(s)
 
-    gs = interp.griddata(points, values, (grid_x, grid_y), method='cubic')
-
-
-    x, y = np.random.random((2,))
+    #gs = interp.griddata(points, values, (grid_x, grid_y), method='cubic')
 
     def F(x, y, targ=gz):
         max_gran = int(gran.imag - 1)
@@ -169,12 +178,13 @@ if __name__ == "__main__":
 
     M = 150
     X = np.linspace(0, 1, M + 1)
-    X = np.array(X)
 
     linestyles = ["-k", "-kd", "-ko", "-k*", "-ks", "-kp", "-k^"]
 
-    for i,alpha in enumerate((0, 0.04,  0.08, 0.12, 0.16, 0.2, 0.24)):
+
+    for i,alpha in enumerate((0, 0.05, 0.1, 0.2, 0.3, 0.4)):
         dat = F(X + alpha, X)
+
         bool = dat >= 0
 
         if alpha == 0:
@@ -190,6 +200,7 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("../../images/eta_plus_const.png")
     plt.clf()
+
 
     for i,alpha in enumerate((0, 0.05, 0.1, 0.2, 0.3, 0.4)):
         dat = F(X - alpha, X)
@@ -210,7 +221,8 @@ if __name__ == "__main__":
     plt.clf()
 
     for i,alpha in enumerate((0, 0.2, 0.4, 0.6, 0.8)):
-        dat = F(X / (1 + alpha), X)
+        dat = F(X / (1. + alpha), X)
+
         bool = dat >= 0
 
         if alpha == 0:
