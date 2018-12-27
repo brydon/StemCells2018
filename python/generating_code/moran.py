@@ -81,13 +81,14 @@ def moh_run(RR2, R2T, UU1, UU2, N1, N2, RR1=1, R1T=1, D1=1, D2=1, D1T=1, D2T=1):
     MAXT = 15000
 
     for t in range(MAXT):
-        r = np.random.random() * Sum(ns, nd)
+        wsp, wsm, wdp, wdm = Wsp(ns-1, nd), Wsm(ns+1, nd), Wdp(ns, nd-1), Wdm(ns, nd+1)
+        r = np.random.random() * (wsp + wsm + wdp + wdm)
 
-        if r < Wsp(ns, nd):
+        if r < wsp:
             ns += 1
-        elif r < Wsp(ns, nd) + Wsm(ns, nd):
+        elif r < wsp + wsm:
             ns -= 1
-        elif r < Wsp(ns, nd) + Wsm(ns, nd) + Wdp(ns, nd):
+        elif r < wsp + wsm + wdp:
             nd += 1
         else:
             nd -= 1
@@ -103,8 +104,8 @@ def p_work(sd):
     n_x = n_y = 35
     np.random.seed(int(sd)) 
 
-    eta2s = [0] + [i / float(n_y) for i in range(1, n_y + 1)]
-    eta1s = [0] + [i / float(n_x) for i in range(1, n_x + 1)]
+    eta2s = [0.] + [i / float(n_y) for i in range(1, n_y + 1)]
+    eta1s = [0.] + [i / float(n_x) for i in range(1, n_x + 1)]
 
     return [[moh_run(r2, r2t, 0.5, u2, eta1, eta2) for eta2 in eta2s] for eta1 in eta1s]
 
@@ -152,7 +153,7 @@ def main():
 
     for i in range(num_loops):
         temp_res[i] = p.map(p_work, [time.time()*np.random.random() for _ in range(MAX_RUNS)])
-        print "Done ", i # print progress to screen, useful because it takes a while
+        print "Done ", i  # print progress to screen, useful because it takes a while
 
         
     try:
@@ -186,7 +187,11 @@ if __name__ == "__main__":
     elif whichparam == "r2":
         u2 = 0.5
         r2 = r2t = float(sys.argv[-1])
-    outdir = "../../data/vary_eta1_eta2_" + whichparam
+
+    r2 = r2t = 1
+    u2 = 0.5
+
+    outdir = "../../data/new_just_e1e2"
 
     print main()
 

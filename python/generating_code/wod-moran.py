@@ -37,27 +37,26 @@ def wod_run(r1, r2, p1, p2, g1, g2, d1=1, d2=1, maxNS=10, maxND=10):
     def Nr(ns, nd):
         return r1 * (NS - ns) + r2 * ns + g1 * (ND - nd) + g2 * nd
 
-    def Wp(ns, nd): #   W^{+}, (n_S, n_D) \mapto (n_S + 1, n_D)
+    def Wp(ns, nd):   # W^{+}, (n_S, n_D) \mapto (n_S + 1, n_D)
         return ((NS - ns) * ns / float(NS * Nr(ns, nd))) * r2 * p2
 
-    def Wm(ns, nd): #   W^{-}, (n_S, n_D) \mapto (n_S - 1, n_D)
+    def Wm(ns, nd):   # W^{-}, (n_S, n_D) \mapto (n_S - 1, n_D)
         return ((NS - ns) * ns / float(NS * Nr(ns, nd))) * r1 * p1
 
-    def Wmpp(ns, nd): # W^{-}_{++}, (n_S, n_D) \mapto (n_S - 1, n_D + 2)
+    def Wmpp(ns, nd):  # W^{-}_{++}, (n_S, n_D) \mapto (n_S - 1, n_D + 2)
         return ((NS - ns) * ns / float(NS * Nr(ns, nd))) * r2 * (1 - p2)
 
-    def Wpmm(ns, nd): # W^{+}_{--}, (n_S, n_D) \mapto (n_S + 1, n_D - 2)
+    def Wpmm(ns, nd):  # W^{+}_{--}, (n_S, n_D) \mapto (n_S + 1, n_D - 2)
         return ((NS - ns) * ns / float(NS * Nr(ns, nd))) * r1 * (1 - p1)
 
-    def Wpm(ns, nd): #  W^{+}_{-}, (n_S, n_D) \mapto (n_S + 1, n_D - 1)
+    def Wpm(ns, nd):   # W^{+}_{-}, (n_S, n_D) \mapto (n_S + 1, n_D - 1)
         return ((ND - nd) * nd / float(ND * Nr(ns, nd))) * g2
 
-    def Wmp(ns, nd): #  W^{-}_{+}, (n_S, n_D) \mapto (n_S - 1, n_D + 1)
+    def Wmp(ns, nd):   # W^{-}_{+}, (n_S, n_D) \mapto (n_S - 1, n_D + 1)
         return ((ND - nd) * nd / float(ND * Nr(ns, nd))) * g1
 
-    def Sum(ns, nd):
-        return Wp(ns, nd) + Wm(ns, nd) + Wmpp(ns, nd) + Wpmm(ns, nd) + Wpm(ns, nd) + Wmp(ns, nd)
-
+    def heavi(x):
+        return 0 if x <= 0 else x
 
     NS = maxNS
     ND = maxND
@@ -69,17 +68,20 @@ def wod_run(r1, r2, p1, p2, g1, g2, d1=1, d2=1, maxNS=10, maxND=10):
     MAXT = 15000
 
     for t in range(MAXT):
-        r = np.random.random() * Sum(ns, nd)
+        wp, wm, wmpp = heavi(Wp(ns-1, nd)), heavi(Wm(ns+1, nd)), heavi(Wmpp(ns+1, nd-2))
+        wpmm, wpm, wmp = heavi(Wpmm(ns-1, nd+2)), heavi(Wpm(ns-1, nd+1)), heavi(Wmp(ns+1, nd-1))
 
-        if r < Wp(ns, nd):
+        r = np.random.random() * (wp + wm + wmpp + wpmm + wpm + wmp)
+
+        if r < wp:
             ns, nd = ns + 1, nd
-        elif r < Wp(ns, nd) + Wm(ns, nd):
+        elif r < wp + wm:
             ns, nd = ns - 1, nd
-        elif r < Wp(ns, nd) + Wm(ns, nd) + Wmpp(ns, nd):
+        elif r < wp + wm + wmpp:
             ns, nd = ns - 1, nd + 2
-        elif r < Wp(ns, nd) + Wm(ns, nd) + Wmpp(ns, nd) + Wpmm(ns, nd):
+        elif r < wp + wm + wmpp + wpmm:
             ns, nd = ns + 1, nd - 2
-        elif r < Wp(ns, nd) + Wm(ns, nd) + Wmpp(ns, nd) + Wpmm(ns, nd) + Wpm(ns, nd):
+        elif r < wp + wm + wmpp + wpmm + wpm:
             ns, nd = ns + 1, nd - 1
         else:
             ns, nd = ns - 1, nd + 1
@@ -111,8 +113,8 @@ def p_work(arg):
     n_x = n_y = 35
     np.random.seed(int(sd)) 
 
-    g2s = [0] + [i / float(n_y) for i in range(1, n_y + 1)]
-    g1s = [0] + [i / float(n_x) for i in range(1, n_x + 1)]
+    g2s = [0.] + [i / float(n_y) for i in range(1, n_y + 1)]
+    g1s = [0.] + [i / float(n_x) for i in range(1, n_x + 1)]
 
     return [[wod_run(r1, r2, p1, p2, g1, g2) for g2 in g2s] for g1 in g1s]
 
@@ -155,6 +157,7 @@ def main(r1, r2, p1 , p2):
         startj = max([int(x[x.rfind('_')+1:x.rfind('.')]) for x in os.listdir(outdir) if x.startswith(start_str)]) + 1
     except:
         startj = 0
+
     if startj >= MAX_j:
         return
 
@@ -163,7 +166,6 @@ def main(r1, r2, p1 , p2):
         temp_res[i] = p.map(p_work, [(time.time()*np.random.random(), r1, r2, p1, p2) for _ in range(MAX_RUNS)])
         print "Done ", i # print progress to screen, useful because it takes a while
 
-        
     try:
         startj = max([int(x[x.rfind('_')+1:x.rfind('.')]) for x in os.listdir(outdir) if x.startswith(start_str)]) + 1
     except:
@@ -181,7 +183,7 @@ def main(r1, r2, p1 , p2):
     # not really a concern. I figure i save more CPU time by just biting the bullet there than actually
     # doing a semaphore check at each iteration. 
 
-    temp_pkl(startj, np.mean(np.mean(temp_res, 0),0))
+    temp_pkl(startj, np.mean(np.mean(temp_res, 0), 0))
 
     return "Finished Successfully"
 
@@ -189,13 +191,14 @@ def main(r1, r2, p1 , p2):
 if __name__ == "__main__":
     r1, r2, p1, p2 = sys.argv[-4:]
 
-    outdir = "./"
+    outdir = "./wods"
 
-    #print main(float(r1), float(r2), float(p1), float(p2))
+    print main(float(r1), float(r2), float(p1), float(p2))
 
+    """
     print r1, r2, p1, p2
 
     runs = np.array([wod_run(float(r1), float(r2), float(p1), float(p2), 0.5, 0.5) for _ in range(1000)])
     print np.mean(runs == 1)
     print np.sum(runs == -1)
-
+    """
